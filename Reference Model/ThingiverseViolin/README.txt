@@ -1,1 +1,0 @@
-Full Size Acoustic Violin by Woody2552 on Thingiverse: https://www.thingiverse.com/thing:2752036
