@@ -1,0 +1,13 @@
+
+
+Look into these two types of solenoids:
+JF-0826B (20n push strength)
+JF-1039B (25n push strength) - From Eshinede (alibaba)
+
+see this website for other solenoid MIDI insturemnt:
+https://brandonswitzer.squarespace.com/player-piano
+
+need 24 volt PSUs
+
+look at 0802 brushless motors for the rosen wheels
+
