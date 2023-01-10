@@ -22,7 +22,9 @@ unsigned long LastMicrosecondTicks{};
 //HardwareSerial SerialPort(1);
 //HardwareSerial Serial1();
 
-//MIDI_CREATE_INSTANCE(HardwareSerial, SerialPort, MIDI);
+MIDI_CREATE_INSTANCE(HardwareSerial, Serial1, MIDI);
+
+
 
 //for debug
 bool LightLED;
@@ -38,7 +40,7 @@ void GetTicks(void)
 }
 
 
-// Function that is called whenever a MIDI Note On message is received.
+//Function that is called whenever a MIDI Note On message is received.
 void onNoteOn(uint8_t channel, uint8_t pitch, uint8_t velocity) {
 
     digitalWrite(LED_BUILTIN, true);
@@ -46,7 +48,7 @@ void onNoteOn(uint8_t channel, uint8_t pitch, uint8_t velocity) {
 
 
 }
-//this was needed for debugging, but not for the final firmware
+//off message
 void onNoteOff(uint8_t channel, uint8_t pitch, uint8_t velocity)
 {
     digitalWrite(LED_BUILTIN, false);
@@ -57,22 +59,23 @@ void onNoteOff(uint8_t channel, uint8_t pitch, uint8_t velocity)
 void setup()
 {
 
-    //SerialPort.setPins(GPIO_NUM_11, GPIO_NUM_10);//rx, tx
-
-    Serial1.setPins(GPIO_NUM_11, GPIO_NUM_10);//rx, tx
-
-
     //tie callbacks to midi events
-    //MIDI.setHandleNoteOn(onNoteOn);
-    //MIDI.setHandleNoteOff(onNoteOff);//this was needed for debugging, but not for the final firmware
-    //MIDI.begin();
+    MIDI.setHandleNoteOn(onNoteOn);
+    MIDI.setHandleNoteOff(onNoteOff);//this was needed for debugging, but not for the final firmware
+    MIDI.begin();
 
+    //change MIDI pins to the correct ones on the board. note, these can only be changed after Serial1 has been started
+    //also, not all boards may be able to redefine these pins, the ESP32 can.
+    Serial1.setPins(RX_PIN, TX_PIN);//rx, tx
 
 
     LightLED = false;
     pinMode(LED_BUILTIN, OUTPUT);
 
-    Serial1.begin(9600);
+
+    //debug comms
+    //Serial.begin(9600);
+
 
 }
 
@@ -89,11 +92,13 @@ void loop() {
     }
 
 
+    MIDI.read();
+
     if( MillisecondTicks != LastMillisecondTicks &&
         MillisecondTicks % 1000 == 0)
     {
         LightLED = (LightLED? 0 : 1);
-        Serial1.println(LightLED);
+        //Serial.println(LightLED);//debug, the ESP32 doesn't like using this when the MIDI serial port is open for some reason... maybe it is the GPIO pins I'm using?
         //digitalWrite(LED_BUILTIN, LightLED);
     }
 

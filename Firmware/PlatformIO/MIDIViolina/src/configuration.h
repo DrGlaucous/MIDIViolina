@@ -19,20 +19,20 @@ enum {
 //the state of a pin when it is "high" or "clicked" (nothing actually uses this in the code, but its useful for debugging)
 #define ON_STATE 0
 
-//number of notes on the violin
-#define SERVO_COUNT 30
-#define SERVO_PUSH_TIME 360//in Milliseconds (1K == 1 second)
 
-
-#define CONTINUOUS_REST_ANGLE 1500//the angle the continuous rotation servo will be set to "at rest"
-#define CONTINUOUS_ACTIVE_ANGLE 700//the angle it uses when rotating (i believe the more different it is from the rest angle, the faster the servo will go)
-#define CONTINUOUS_SERVO_PIN PA14//PA14//pin for this servo (I use PC13 for debugging)
-#define CONTINUOUS_RUN_TIME 500//time in milliseconds the servo will spin
+//Midi IO pins, connected to the DIN breakout
+#define RX_PIN GPIO_NUM_13
+#define TX_PIN GPIO_NUM_12
 
 
 
 
 
-#define SMOOTH_SWEEP//sweeps the servo at a controlled rate, giving steps of angles. if not defined, servos will sweep with only the min and max angles (this is faster, but less well-timed)
 
-//#define WAIT_UNTIL_DONE//will not try to play another note on the servo until it has retracted fully
+//number of notes on the violin, each one relating to a solenoid
+#define FINGER_COUNT 28
+
+//number of strings, each one relating to one solenoid and an N20 motor, the "Bow"
+#define STRING_COUNT 4
+
+
