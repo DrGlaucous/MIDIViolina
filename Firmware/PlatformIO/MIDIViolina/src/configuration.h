@@ -35,4 +35,9 @@
 //number of strings, each one relating to one solenoid and an N20 motor, the "Bow"
 #define STRING_COUNT 4
 
-
+//shift register pinouts
+#define LATCH_PIN GPIO_NUM_32
+#define OUTPUT_ENABLE_PIN GPIO_NUM_33
+#define DATA_PIN GPIO_NUM_25
+#define SHIFT_CLEAR_PIN GPIO_NUM_27 //GPIO_NUM_34 silly me, I forgot these were input-only. I had to modify the board
+#define CLOCK_PIN GPIO_NUM_26 //GPIO_NUM_35
