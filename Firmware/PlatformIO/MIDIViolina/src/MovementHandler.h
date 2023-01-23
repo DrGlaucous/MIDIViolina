@@ -6,9 +6,9 @@
 
 typedef struct FINGER_STRUCT
 {
-    int note;
-    int stringID;
-    bool status;
+    int note;//MIDI note ID
+    int stringID;//what string must also be pressed
+    bool status;//On or off
 }FINGER_STRUCT;
 
 typedef struct STRING_STRUCT
@@ -22,8 +22,8 @@ extern FINGER_STRUCT Fingers[FINGER_COUNT];
 extern STRING_STRUCT StringStat[STRING_COUNT];
 
 
-
-
-
+void InitPinout(void);
+void HandleNote(int note, bool noteStatus);
+void ShiftBack(void);
 
 

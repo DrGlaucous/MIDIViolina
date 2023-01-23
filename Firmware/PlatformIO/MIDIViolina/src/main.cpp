@@ -7,10 +7,9 @@
 #include <MIDI.h>
 #include <Arduino.h>
 #include <HardwareSerial.h>
-//#include <Control_Surface.h>//an alternate MIDI library, but is not compatible with the STM32 (I originally inteded to use an ESP32)
 #include "main.h"
 #include "configuration.h"
-//#include "ServoHandler.h"
+#include "MovementHandler.h"
 
 
 unsigned long MillisecondTicks{};
@@ -46,6 +45,9 @@ void onNoteOn(uint8_t channel, uint8_t pitch, uint8_t velocity) {
     digitalWrite(LED_BUILTIN, true);
 
 
+    HandleNote(pitch, true);//set new note
+    ShiftBack();//apply new settings to shift registers
+
 
 }
 //off message
@@ -53,11 +55,16 @@ void onNoteOff(uint8_t channel, uint8_t pitch, uint8_t velocity)
 {
     digitalWrite(LED_BUILTIN, false);
 
+    HandleNote(pitch, false);
+    ShiftBack();
+
 }
 
 
 void setup()
 {
+    //prepare pins
+    InitPinout();
 
     //tie callbacks to midi events
     MIDI.setHandleNoteOn(onNoteOn);
@@ -74,7 +81,7 @@ void setup()
 
 
     //debug comms
-    //Serial.begin(9600);
+    Serial.begin(9600);
 
 
 }
@@ -94,12 +101,17 @@ void loop() {
 
     MIDI.read();
 
+    //debuggu stuff
     if( MillisecondTicks != LastMillisecondTicks &&
         MillisecondTicks % 1000 == 0)
     {
         LightLED = (LightLED? 0 : 1);
         //Serial.println(LightLED);//debug, the ESP32 doesn't like using this when the MIDI serial port is open for some reason... maybe it is the GPIO pins I'm using?
-        //digitalWrite(LED_BUILTIN, LightLED);
+        digitalWrite(LED_BUILTIN, LightLED);
+        HandleNote(1, LightLED);
+        //digitalWrite(SHIFT_CLEAR_PIN, LightLED);
+        ShiftBack();
+
     }
 
 
