@@ -22,9 +22,10 @@
 
 //Midi IO pins, connected to the DIN breakout
 #define RX_PIN GPIO_NUM_13
-#define TX_PIN GPIO_NUM_12
+#define TX_PIN GPIO_NUM_14//Note: GPIO_12 is a bootstrap pin; it cannot be HIGH on boot (may have do do some hardware mods, but we shouldn't ever need to send notes)
 
-
+//What channel to listen to events on
+#define MIDI_CHANNEL 0
 
 //now fast will the bow motors spin at max velocity (unsigned char)
 #define MAX_MOTOR_SPEED 64
@@ -41,3 +42,18 @@
 #define DATA_PIN GPIO_NUM_25
 #define SHIFT_CLEAR_PIN GPIO_NUM_27 //GPIO_NUM_34 silly me, I forgot these were input-only. I had to modify the board
 #define CLOCK_PIN GPIO_NUM_26 //GPIO_NUM_35
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////
+#define USBCON
+
+
+

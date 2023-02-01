@@ -5,42 +5,43 @@
 
 
 //define the pins for each finger
-//Note, fingerID, status
+//Note, stringID, status
 FINGER_STRUCT Fingers[] = 
 {
-    {1, 0, false},
-    {1, 0, false},
-    {1, 0, false},
-    {1, 0, false},
-    {1, 0, false},
-    {1, 0, false},
-    {1, 0, false},
+    {47, 0, false},
+    {48, 0, false},
+    {49, 0, false},
+    {50, 0, false},
+    {51, 0, false},
+    {52, 0, false},
+    {53, 0, false},
 
-    {1, 1, false},
-    {1, 1, false},
-    {1, 1, false},
-    {1, 1, false},
-    {1, 1, false},
-    {1, 1, false},
-    {1, 1, false},
+    {54, 1, false},
+    {55, 1, false},
+    {56, 1, false},
+    {57, 1, false},
+    {58, 1, false},
+    {59, 1, false},
+    {60, 1, false},
 
-    {1, 2, false},
-    {1, 2, false},
-    {1, 2, false},
-    {1, 2, false},
-    {1, 2, false},
-    {1, 2, false},
-    {1, 2, false},
+    {61, 2, false},
+    {62, 2, false},
+    {63, 2, false},
+    {64, 2, false},
+    {65, 2, false},
+    {66, 2, false},
+    {67, 2, false},
 
-    {1, 3, false},
-    {1, 3, false},
-    {1, 3, false},
-    {1, 3, false},
-    {1, 3, false},
-    {1, 3, false},
-    {1, 3, false},
+    {68, 3, false},
+    {69, 3, false},
+    {70, 3, false},
+    {71, 3, false},
+    {72, 3, false},
+    {73, 3, false},
+    {74, 3, false},
 };
 
+//status, speed, idle time left
 STRING_STRUCT StringStat[STRING_COUNT]
 {
     {false, 0, 0},
@@ -71,6 +72,8 @@ void InitPinout(void)
     digitalWrite(OUTPUT_ENABLE_PIN, LOW);
     digitalWrite(SHIFT_CLEAR_PIN, HIGH);//do not shift clear (set LOW to clear)
 
+
+    ShiftBack();//get rid of any garbage in the registers
 
 }
 
@@ -124,12 +127,11 @@ void ShiftBack(void)
         RegisterArray[FINGER_COUNT + i] = StringStat[i].status;
 
     //TEST print array
-    Serial.print("\n START \n");
-    for(int i = 0; i < FINGER_COUNT + STRING_COUNT; i++)
-    {
-        Serial.print(RegisterArray[i]);
-    }
-    Serial.print("\n FINISH \n");
+    //Serial.print("\n");
+    //for(int i = 0; i < FINGER_COUNT + STRING_COUNT; i++)
+    //{
+    //    Serial.print(RegisterArray[i]);
+    //}
 
 
 
@@ -144,9 +146,9 @@ void ShiftBack(void)
 
             //advance register
             digitalWrite(CLOCK_PIN, HIGH);
-            //delay(1);//for testing
+            delayMicroseconds(2);//for testing
             digitalWrite(CLOCK_PIN, LOW);
-            //delay(1);
+            delayMicroseconds(2);
         }
 
 
@@ -158,6 +160,27 @@ void ShiftBack(void)
 }
 
 
+//debug func, checks if any note value is 1
 
+bool CheckNote(void)
+{
+    for(int i = 0; i < FINGER_COUNT; ++i)
+    {
+        if(Fingers[i].status == true)
+            return Fingers[i].status;
+
+    }
+
+    for(int i = 0; i < STRING_COUNT; ++i)
+    {
+        if(StringStat[i].status == true)
+            return StringStat[i].status;
+
+    }
+
+
+    return false;
+
+}
 
 

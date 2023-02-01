@@ -27,3 +27,4 @@ void HandleNote(int note, bool noteStatus);
 void ShiftBack(void);
 
 
+bool CheckNote(void);
